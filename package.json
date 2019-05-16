@@ -6,7 +6,8 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "prepare": "node bin/photos2json.js"
+    "prepare": "node bin/photos2json.js",
+    "compress": "node bin/compress.js"
   },
   "dependencies": {
     "core-js": "^2.6.5",
