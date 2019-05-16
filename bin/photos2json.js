@@ -29,7 +29,7 @@ let photoJSON = {};
     }
 
     fs.writeFileSync(path.resolve(__dirname, './../public/photos.json'), JSON.stringify(photoJSON))
-    console.log(`照片数量: ${photos.length} \n数据保存至：${path.resolve(__dirname, './../public/photos.json')}`)
+    console.log(`照片数量: ${photos.length}   数据保存成功！ ${path.resolve(__dirname, './../public/photos.json')}`)
 })();
 
 function getExif(path, filename) {

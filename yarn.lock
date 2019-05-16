@@ -4067,6 +4067,11 @@ ignore@^4.0.3, ignore@^4.0.6:
   resolved "https://registry.npm.taobao.org/ignore/download/ignore-4.0.6.tgz#750e3db5862087b4737ebac8207ffd1ef27b25fc"
   integrity sha1-dQ49tYYgh7RzfrrIIH/9HvJ7Jfw=
 
+imagemagick@^0.1.3:
+  version "0.1.3"
+  resolved "https://registry.npmjs.org/imagemagick/-/imagemagick-0.1.3.tgz#7483cea093b4d9f2e2f396857adc8821b537c56a"
+  integrity sha1-dIPOoJO02fLi85aFetyIIbU3xWo=
+
 import-cwd@^2.0.0:
   version "2.1.0"
   resolved "https://registry.npm.taobao.org/import-cwd/download/import-cwd-2.1.0.tgz#aa6cf36e722761285cb371ec6519f53e2435b0a9"
@@ -5468,8 +5473,8 @@ optionator@^0.8.2:
 
 ora@^3.4.0:
   version "3.4.0"
-  resolved "https://registry.npm.taobao.org/ora/download/ora-3.4.0.tgz#bf0752491059a3ef3ed4c85097531de9fdbcd318"
-  integrity sha1-vwdSSRBZo+8+1MhQl1Md6f280xg=
+  resolved "https://registry.npmjs.org/ora/-/ora-3.4.0.tgz#bf0752491059a3ef3ed4c85097531de9fdbcd318"
+  integrity sha512-eNwHudNbO1folBP3JsZ19v9azXWtQZjICdr3Q0TDPIaeBQ3mXLrh54wM+er0+hSp+dWKf+Z8KM58CYzEyIYxYg==
   dependencies:
     chalk "^2.4.2"
     cli-cursor "^2.1.0"
