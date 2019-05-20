@@ -10,9 +10,12 @@
 
 <style lang="scss">
 @import './style/common.scss';
-
+body {
+  overflow-y: hidden;
+}
 #app {
   text-align: center;
+  transition: .5s all;
 }
 #nav {
   position: fixed;

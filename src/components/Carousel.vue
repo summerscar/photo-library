@@ -1,22 +1,41 @@
 <template>
     <div class="Carousel" :style="{height: height + 'px'}">
+        <div class="Carousel-background"></div>
+        <div class="detail">
+            <div class="detail-left"></div>
+        </div>
         <div class="photo_wrapper" :style="{width: width + 'px'}">
-            <div class="photoCover"></div>
-            <div class="phohoList" :style="{width: width * photos.length + 'px', left: '-' + index * width + 'px'}">
+            <div class="photoCover" :style="dominantColor"></div>
+            <div class="phohoList" ref="phohoList" :style="{width: width * photos.length + 'px', left: '-' + nowIndex * width + 'px'}">
                 <div class="photo" v-for="(photo, index) in photos" :key="index" :style="{width: width + 'px'}">
-                    <img :src="photo.data" @load="imgloaded">
+                    <img :ref="'img' + [index]" :src="photo.data" @load="imgloaded($event, index)">
                 </div>
             </div>
         </div>
-         <div class="left">
-
+        <div class="detail">
+            <div class="detail-wrapper detail-right">
+                <ul :style="fontColor">
+                    <li><span>产商</span>{{photos[nowIndex].Make}}</li>
+                    <li><span>型号</span>{{photos[nowIndex].Model}}</li>
+                    <li><span>ISO</span>{{photos[nowIndex].ISO}}</li>
+                    <li><span>光圈</span>{{photos[nowIndex].FNumber}}</li>
+                    <li><span>快门</span>{{photos[nowIndex].ExposureTime}}</li>
+                    <li><span>焦距</span>{{photos[nowIndex].FocalLength}}</li>
+                </ul>
+            </div>
         </div>
-         <div class="right">
-
+        <div class="control-arrow left" @click="previous">
+            <i class="fa fa-angle-left" aria-hidden="true"></i>
+        </div>
+        <div class="control-arrow right" @click="next">
+            <i class="fa fa-angle-right" aria-hidden="true"></i>
         </div>
     </div>
 </template>
 <script>
+const ColorThief = require('color-thief');
+const colorThief = new ColorThief();
+
 export default {
     props: {
         photos: {
@@ -25,7 +44,7 @@ export default {
         },
         index: {
             type: Number,
-            default: 1
+            default: 0
         },
         height: {
             type: Number,
@@ -36,8 +55,47 @@ export default {
             default: 400
         }
     },
+    data() {
+        return {
+            nowIndex: this.index,
+            firstLoaded: false,
+            colorArr: [0,0,0],
+            fontColor: ''
+        }
+    },
+    mounted() {
+        // console.log()
+    },
+    watch: {
+        firstLoaded: function () {
+            this.$refs.phohoList.style.transition = '0.5s all'
+            this.colorArr = colorThief.getColor(this.$refs['img0'][0])
+            this.fontColor = {color: 'rgb(' + colorThief.getPalette(this.$refs['img0'][0])[0].join(',') + ')'}
+        },
+        nowIndex: function (index) {
+            this.colorArr = colorThief.getColor(this.$refs['img' + index][0])
+            this.fontColor = {color: 'rgb(' + colorThief.getPalette(this.$refs['img' + index][0])[0].join(',') + ')'}
+        },
+        colorArr: function () {
+            this.$emit('colorChange', 'rgb(' + this.colorArr.join(',') + ')')
+        },
+        fontColor: function (value) {
+            this.$emit('fontColorChange', value)
+        }
+    },
+    computed: {
+        dominantColor() {
+            return {boxShadow: 'inset 0px 0px 14px 4px rgb(' + this.colorArr.join(',') + ')'}
+        },
+        carouselColor() {
+            return 'rgb(' + this.colorArr.join(',') + ')'
+        }
+    },
     methods: {
-        imgloaded(e) {
+        imgloaded(e, index) {
+            if (index === 0 ) {
+                this.firstLoaded = true
+            }
             let {width, height} = e.target
             if (e.target.width / e.target.height < 4 / 3) {
                 e.target.style.height = this.height + 'px'
@@ -46,6 +104,24 @@ export default {
                 e.target.style.width = this.width + 'px'
                 e.target.style.height = this.width * height / width + 'px'
             }
+        },
+        previous() {
+            if (this.nowIndex === 0) {
+                // this.nowIndex = this.photos.length - 1
+                return
+            } else {
+                this.nowIndex -= 1
+            }
+            this.$emit('change', this.nowIndex)
+        },
+        next() {
+            if (this.nowIndex === this.photos.length - 1) {
+                return
+                // this.nowIndex = 0
+            } else {
+                this.nowIndex += 1
+            }
+            this.$emit('change', this.nowIndex)
         }
     }
 }
@@ -54,13 +130,52 @@ export default {
 div.Carousel {
     width: 100%;
     position: relative;
-    text-align: center;
+    display: flex;
+    justify-content: space-between;
+    div.detail {
+        height: 100%;
+        flex: auto;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+        div.detail-wrapper {
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            opacity: 0.8;
+
+            ul {
+                position: absolute;
+                top: 50%;
+                left: 20%;
+                transform: translateY(-50%);
+                li {
+                    span {
+                        display: inline-block;
+                        width: 40px;
+                    }
+                    line-height: 1.6;
+                    text-align: left;
+                }
+            }
+        }
+    }
+    div.Carousel-background {
+        background-color: white;
+        transition: .5s background-color;
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: -1;
+    }
     div.photo_wrapper {
-        display: inline-block;
-        margin: 0 auto;
         height: 100%;
         overflow: hidden;
-        border: 1px solid #66ccff;
         position: relative;
         div.photoCover {
             position: absolute;
@@ -69,8 +184,8 @@ div.Carousel {
             right: 0;
             top: 0;
             bottom: 0;
-            box-shadow: inset 0px 0px 14px 4px #00000052;
             pointer-events: none;
+            transition: .5s box-shadow;
         }
         div.phohoList {
             height: 100%;
@@ -86,6 +201,19 @@ div.Carousel {
                 top: 50%;
                 transform: translate(-50%, -50%);
             }
+        }
+    }
+    div.control-arrow {
+        font-size: 50px;
+        padding: 5px 15px;
+        cursor: pointer;
+        opacity: 0.25;
+        transition: .5s opacity;
+        background-color: #00000029;
+        border-radius: 10px;
+        transform: translateY(-50%);
+        &:hover {
+            opacity: 0.5;
         }
     }
     div.left {

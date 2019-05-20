@@ -1,5 +1,7 @@
 # photo-library
 
+一个时间轴功能的相册
+
 ## Project setup
 ```
 yarn install

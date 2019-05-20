@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <PhotoStage />
-    <TimeLine />
+    <TimeLine class="timeline"/>
   </div>
 </template>
 
@@ -19,5 +19,8 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-
+.timeline {
+    top: 6px;
+    position: relative;
+}
 </style>
