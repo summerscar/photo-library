@@ -4,7 +4,7 @@
         <div class="detail">
             <div class="detail-left"></div>
         </div>
-        <div class="photo_wrapper" :style="{width: width + 'px'}">
+        <div class="photo_wrapper" ref="photoWrapper" :style="{width: width + 'px'}">
             <div class="photoCover" :style="dominantColor"></div>
             <div class="phohoList" ref="phohoList" :style="{width: width * photos.length + 'px', left: '-' + nowIndex * width + 'px'}">
                 <div class="photo" v-for="(photo, index) in photos" :key="index" :style="{width: width + 'px'}">
@@ -97,7 +97,7 @@ export default {
                 this.firstLoaded = true
             }
             let {width, height} = e.target
-            if (e.target.width / e.target.height < 4 / 3) {
+            if (e.target.width / e.target.height < this.$refs.photoWrapper.clientWidth / this.$refs.photoWrapper.clientHeight) {
                 e.target.style.height = this.height + 'px'
                 e.target.style.width = this.height * width / height + 'px'
             } else {
@@ -196,6 +196,7 @@ div.Carousel {
             height: 100%;
             position: relative;
             img {
+                border-radius: 8px;
                 position: absolute;
                 left: 50%;
                 top: 50%;
