@@ -1,7 +1,7 @@
 <template>
   <div class="home">
-    <PhotoStage />
-    <TimeLine class="timeline"/>
+    <PhotoStage @fontColorChange="fontColorChange"/>
+    <TimeLine class="timeline" :fontColor="fontColor"/>
   </div>
 </template>
 
@@ -12,9 +12,19 @@ import TimeLine from '@/components/TimeLine.vue'
 
 export default {
   name: 'home',
+  data() {
+    return {
+        fontColor: {}
+    }
+  },
   components: {
     PhotoStage,
     TimeLine
+  },
+  methods: {
+    fontColorChange(fontColor) {
+      this.fontColor = fontColor
+    }
   }
 }
 </script>

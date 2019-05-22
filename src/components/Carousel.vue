@@ -15,6 +15,7 @@
         <div class="detail">
             <div class="detail-wrapper detail-right">
                 <ul :style="fontColor">
+                    <li><span>照片</span>{{photos[nowIndex].File}}</li>
                     <li><span>产商</span>{{photos[nowIndex].Make}}</li>
                     <li><span>型号</span>{{photos[nowIndex].Model}}</li>
                     <li><span>ISO</span>{{photos[nowIndex].ISO}}</li>
@@ -159,6 +160,7 @@ div.Carousel {
                     }
                     line-height: 1.6;
                     text-align: left;
+                    opacity: 0.5;
                 }
             }
         }

@@ -65,6 +65,7 @@ export default {
   methods: {
     fontColorChange(value) {
       this.fontColor = value
+      this.$emit('fontColorChange', value)
     },
     colorChange(color) {
       document.getElementById('app').style.backgroundColor = color
