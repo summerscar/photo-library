@@ -1,7 +1,7 @@
 <template>
   <div class="home">
-    <PhotoStage @fontColorChange="fontColorChange"/>
-    <TimeLine class="timeline" :fontColor="fontColor"/>
+    <PhotoStage @fontColorChange="fontColorChange" :photosData="photosData" :photoIndex="timeLineIndex" @imgChange="stageChange"/>
+    <TimeLine class="timeline" :fontColor="fontColor" :photosData="photosData" :stageIndex="stageIndex" @change="timeLineChange"/>
   </div>
 </template>
 
@@ -9,12 +9,16 @@
 // @ is an alias to /src
 import PhotoStage from '@/components/PhotoStage.vue'
 import TimeLine from '@/components/TimeLine.vue'
+import photosData from './../../public/photos.json'
 
 export default {
   name: 'home',
   data() {
     return {
-        fontColor: {}
+      photosData: photosData,
+      fontColor: {},
+      timeLineIndex: 0,
+      stageIndex: 0
     }
   },
   components: {
@@ -24,6 +28,12 @@ export default {
   methods: {
     fontColorChange(fontColor) {
       this.fontColor = fontColor
+    },
+    timeLineChange(index) {
+      this.timeLineIndex = index
+    },
+    stageChange(index) {
+      this.stageIndex = index
     }
   }
 }

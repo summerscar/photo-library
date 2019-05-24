@@ -68,6 +68,9 @@ export default {
         // console.log()
     },
     watch: {
+        index: function() {
+            this.nowIndex = this.index
+        },
         firstLoaded: function () {
             this.$refs.phohoList.style.transition = '0.5s all'
             this.colorArr = colorThief.getColor(this.$refs['img0'][0])

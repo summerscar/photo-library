@@ -18,25 +18,36 @@
         </span>
       </div>
     </div>
-    <Carousel :photos="photoArray" :height="photoHeight" :width="photoHeight * 3 / 2" @change="imgChang" @colorChange="colorChange" @fontColorChange="fontColorChange" />
+    <Carousel
+      :index="photoIndex"
+      :photos="photoArray"
+      :height="photoHeight"
+      :width="photoHeight * 3 / 2"
+      @change="imgChange"
+      @colorChange="colorChange"
+      @fontColorChange="fontColorChange" />
   </div>
 </template>
 
 <script>
 import Carousel from './Carousel'
-import photosData from './../../public/photos.json'
 import dayjs from 'dayjs'
 
 export default {
   name: 'photoStage',
   props: {
-    msg: String
+    photoIndex: {
+      type: Number,
+      default: 0
+    },
+    photosData: {
+      type: Object,
+      default: () => null
+    }
   },
   data() {
     return {
-      photosData: photosData,
       photoHeight: 0,
-      photoIndex: 0,
       dayjs: dayjs,
       dayArr: ['一', '二', '三', '四', '五', '六', '日'],
       fontColor: {},
@@ -56,7 +67,7 @@ export default {
           }
         }
       }
-      arr.map(item => {
+      arr.forEach(item => {
         item.data = require('./../../public/photos/' + item.File)
       })
       return arr
@@ -71,8 +82,8 @@ export default {
       document.getElementById('app').style.backgroundColor = color
       this.dominantColor = color
     },
-    imgChang(index) {
-      this.photoIndex = index
+    imgChange(index) {
+      this.$emit('imgChange', index)
       console.log('当前图片', index) // eslint-disable-line
     },
     getPhotoHeight() {
