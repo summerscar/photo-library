@@ -2,21 +2,42 @@
   <div class="timeline">
     <div class="bars" :style="fontColor">
       <div class="timebar">
-        <span class="timestamp interval-1" v-for="(item, index) in photoArray" :key="index">{{ time2Date(item[0].timestamp) }}</span>
+        <span :class="['timestamp', formatInterval(index, index + 1)]" v-for="(item, index) in photoArray" :key="index">{{ time2Date(item[0].timestamp) }}</span>
       </div>
       <div class="bar bar1">
-        <div class="wrapper interval-1" :class="{active: dayindex === dayIndex}" v-for="(dayPhotos, dayIndex) in photoArray" :key="dayIndex" @click="timelineClick(dayIndex)">
-          <img v-for="(photo, index) in dayPhotos" :key="index" :src="photo.data">
+        <div
+          :class="['wrapper', formatInterval(dayIndex, dayIndex + 1), {active: dayindex === dayIndex}, {hidden: filterImage(dayPhotos, 1).length === 0}]"
+          v-for="(dayPhotos, dayIndex) in photoArray"
+          :key="dayIndex"
+          @click="timelineClick(dayIndex)">
+          <img v-for="(photo, index) in filterImage(dayPhotos, 1)" :key="index" :src="photo.data">
         </div>
       </div>
-      <div class="bar bar2"></div>
-      <div class="bar bar3"></div>
+      <div class="bar bar2">
+        <div
+          :class="['wrapper', formatInterval(dayIndex, dayIndex + 1), {active: dayindex === dayIndex}, {hidden: filterImage(dayPhotos, 2).length === 0}]"
+          v-for="(dayPhotos, dayIndex) in photoArray"
+          :key="dayIndex"
+          @click="timelineClick(dayIndex)">
+          <img v-for="(photo, index) in filterImage(dayPhotos, 2)" :key="index" :src="photo.data">
+        </div>
+      </div>
+      <div class="bar bar3">
+        <div
+          :class="['wrapper', formatInterval(dayIndex, dayIndex + 1), {active: dayindex === dayIndex}, {hidden: filterImage(dayPhotos, 3).length === 0}]"
+          v-for="(dayPhotos, dayIndex) in photoArray"
+          :key="dayIndex"
+          @click="timelineClick(dayIndex)">
+          <img v-for="(photo, index) in filterImage(dayPhotos, 3)" :key="index" :src="photo.data">
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 import { mapGetters, mapMutations } from "vuex";
+const oneDayms = 60 * 60 *24 * 1000
 
 export default {
   name: 'timeline',
@@ -29,7 +50,7 @@ export default {
   },
   data() {
     return {
-      dayindex: 0
+      dayindex: 0 // dayindex 时间轴中的照片组index
     }
   },
   watch: {
@@ -81,6 +102,48 @@ export default {
     time2Date(timeStamp) {
       let time = new Date(timeStamp)
       return `${time.getMonth() + 1}/${time.getDate()}`
+    },
+    filterImage(photos, imgType) {
+      let filteredImg = photos.filter(photo => {
+        let hour = new Date(photo.timestamp).getHours()
+        let type = 0
+        if (hour < 6) {
+          type = 3
+        } else if (hour < 12) {
+          type = 1
+        } else if (hour < 19) {
+          type = 2
+        } else {
+          type = 3
+        }
+        return imgType === type
+      })
+      return filteredImg
+    },
+    imgVisibility(photo, imgType) {
+      let hour = new Date(photo.timestamp).getHours()
+      let type = 0
+      if (hour < 6) {
+        type = 3
+      } else if (hour < 12) {
+        type = 1
+      } else if (hour < 19) {
+        type = 2
+      } else {
+        type = 3
+      }
+      return imgType === type
+    },
+    formatInterval(now, next) {
+      let nowTimestamp = this.photoArray[now][0].timestamp
+      let nextTimestamp = (this.photoArray[next] && this.photoArray[next][0].timestamp) || ''
+      if (!nextTimestamp) {
+        return ''
+      } else {
+        let days = Math.floor((nextTimestamp - nowTimestamp) / oneDayms)
+        let interval = Math.ceil(days / 3)
+        return 'interval-' + (interval > 4 ? 4 : interval)
+      }
     }
   }
 }
@@ -88,6 +151,9 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
+.hidden {
+  visibility: hidden;
+}
 .interval-1 {
   margin-right: 30px;
 }
@@ -107,7 +173,7 @@ div.timeline {
     background: rgba(0, 0, 0, 0.2);
     width: 100%;
     height: 250px;
-    border-radius: 20px 20px 0 0;
+    border-radius: 10px 10px 0 0;
     box-shadow: 0px -1px 10px 0px rgba(0, 0, 0, 0.5);
     padding: 0px 5px 10px;
     div.bars {
@@ -129,7 +195,7 @@ div.timeline {
       }
       div.bar {
         border-radius: 5px;
-        width: 120%;
+        min-width: 100%;
         height: 55px;
         background: rgba(0, 0, 0, 0.2);
         text-align: left;
@@ -139,15 +205,17 @@ div.timeline {
           display: inline-block;
           border: 2px solid transparent;
           border-radius: 3px;
-          opacity: 0.5;
+          opacity: 0.4;
           cursor: pointer;
+          width: 70px;
+          vertical-align: top;
           &.active {
             opacity: 0.8;
             border: 2px solid;
           }
           img {
             height: 100%;
-            width: 70px;
+            width: 100%;
           }
         }
         &.bar2 {

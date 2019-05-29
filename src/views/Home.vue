@@ -10,7 +10,7 @@
 import PhotoStage from '@/components/PhotoStage.vue'
 import TimeLine from '@/components/TimeLine.vue'
 import photosData from './../../public/photos.json'
-import { mapState, mapGetters } from "vuex";
+import { mapGetters } from "vuex";
 
 export default {
   name: 'home',
@@ -30,6 +30,9 @@ export default {
   components: {
     PhotoStage,
     TimeLine
+  },
+  mounted() {
+
   },
   methods: {
     fontColorChange(fontColor) {

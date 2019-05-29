@@ -65,7 +65,13 @@ export default {
         }
     },
     mounted() {
-        // console.log()
+        this.$el.addEventListener('mousewheel', (e) => {
+            if (e.deltaY > 0) {
+                this.next()
+            } else {
+                this.previous()
+            }
+        })
     },
     watch: {
         stageIndex: function() {

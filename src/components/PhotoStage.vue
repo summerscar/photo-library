@@ -2,9 +2,9 @@
   <div class="photoStage" ref="photoStage">
     <div class="photo_title" ref="photoTitle" :style="fontColor">
       <div class="time">
-        <span class="date" v-if="photoArray">{{ dayjs(photoArray[photoIndex].timestamp).format('YYYY/MM/DD') }}</span>
-        <span class="day" v-if="photoArray">{{ '周' + dayArr[dayjs(photoArray[photoIndex].timestamp).day()] }}</span>
-        <span class="time" v-if="photoArray">{{ dayjs(photoArray[photoIndex].timestamp).format('hh : mm') }}</span>
+        <span class="date" v-if="photoArray">{{ dayjs(photoArray[stageIndex].timestamp).format('YYYY/MM/DD') }}</span>
+        <span class="day" v-if="photoArray">{{ '周' + dayArr[dayjs(photoArray[stageIndex].timestamp).day()] }}</span>
+        <span class="time" v-if="photoArray">{{ (new Date(photoArray[stageIndex].timestamp)).getHours() + ':' + (new Date(photoArray[stageIndex].timestamp)).getMinutes() }}</span>
       </div>
       <div class="control">
         <span>
@@ -14,12 +14,11 @@
           <i class="fa fa-repeat" aria-hidden="true"></i>
         </span>
         <span>
-          {{ (photoIndex + 1) + '/' + photoArray.length }}
+          {{ (stageIndex + 1) + '/' + photoArray.length }}
         </span>
       </div>
     </div>
     <Carousel
-      :index="photoIndex"
       :photos="photoArray"
       :height="photoHeight"
       :width="photoHeight * 3 / 2"/>
@@ -29,15 +28,11 @@
 <script>
 import Carousel from './Carousel'
 import dayjs from 'dayjs'
-import { mapState, mapGetters } from "vuex";
+import { mapGetters } from "vuex";
 
 export default {
   name: 'photoStage',
   props: {
-    photoIndex: {
-      type: Number,
-      default: 0
-    },
     photosData: {
       type: Object,
       default: () => null
@@ -54,7 +49,7 @@ export default {
     this.photoHeight = this.getPhotoHeight()
   },
   computed: {
-    ...mapGetters(['fontColor', 'dominantColor']),
+    ...mapGetters(['fontColor', 'dominantColor', 'stageIndex']),
     photoArray() {
       let arr = []
       for (let year in this.photosData) {
@@ -92,6 +87,9 @@ export default {
       justify-content: space-between;
       padding: 10px 20px;
       background: rgba(0, 0, 0, 0.15);
+      border-radius: 0 0 10px 10px;
+      position: relative;
+      top: -5px;
       div.time {
         span.day {
           padding-left: 10px;
