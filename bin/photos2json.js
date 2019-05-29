@@ -6,7 +6,7 @@ const customParseFormat = require('dayjs/plugin/customParseFormat')
 
 dayjs.extend(customParseFormat)
 
-let photos = fs.readdirSync(path.resolve(__dirname, '../photos'));
+let photos = fs.readdirSync(path.resolve(__dirname, '../photos')).filter(item => item !== '.DS_Store');
 
 let photoJSON = {};
 

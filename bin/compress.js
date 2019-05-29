@@ -10,7 +10,7 @@ spinner.spinner = {
   ]
 }
 
-let photos = fs.readdirSync(path.resolve(__dirname, '../photos'));
+let photos = fs.readdirSync(path.resolve(__dirname, '../photos')).filter(item => item !== '.DS_Store');
 
 (async() => {
     for (let photo of photos) {
