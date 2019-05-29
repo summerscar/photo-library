@@ -34,8 +34,9 @@
     </div>
 </template>
 <script>
-const ColorThief = require('color-thief');
-const colorThief = new ColorThief();
+const ColorThief = require('color-thief')
+const colorThief = new ColorThief()
+import { throttle } from 'throttle-debounce'
 import { mapMutations, mapGetters } from "vuex";
 
 export default {
@@ -122,7 +123,8 @@ export default {
                 e.target.style.height = this.width * height / width + 'px'
             }
         },
-        previous() {
+        previous: throttle(300, function() {
+            console.log('previous')
             if (this.nowIndex === 0) {
                 // this.nowIndex = this.photos.length - 1
                 return
@@ -130,8 +132,9 @@ export default {
                 this.nowIndex -= 1
             }
             this.setStageIndex(this.nowIndex)
-        },
-        next() {
+        }),
+        next: throttle(300, function () {
+            console.log('next')
             if (this.nowIndex === this.photos.length - 1) {
                 return
                 // this.nowIndex = 0
@@ -139,7 +142,7 @@ export default {
                 this.nowIndex += 1
             }
             this.setStageIndex(this.nowIndex)
-        }
+        })
     }
 }
 </script>
