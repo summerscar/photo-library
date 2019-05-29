@@ -2,6 +2,16 @@
 
 一个时间轴功能的相册
 
+## 生成数据json
+```
+yarn generate
+```
+
+## 压缩照片
+```
+yarn compress
+```
+
 ## Project setup
 ```
 yarn install

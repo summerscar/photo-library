@@ -19,3 +19,9 @@ yarn-error.log*
 *.njsproj
 *.sln
 *.sw?
+
+/photos
+
+/public/photos
+
+/public/photos.json
