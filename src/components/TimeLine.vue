@@ -16,21 +16,15 @@
 </template>
 
 <script>
+import { mapGetters, mapMutations } from "vuex";
+
 export default {
   name: 'timeline',
   props: {
     msg: String,
-    fontColor: {
-      default: () => {},
-      type: Object
-    },
     photosData: {
       type: Object,
       default: () => null
-    },
-    stageIndex: {
-      type: Number,
-      default: 0
     }
   },
   data() {
@@ -55,6 +49,7 @@ export default {
     }
   },
   computed: {
+    ...mapGetters(['fontColor', 'dominantColor', 'stageIndex', 'timeLineIndex']),
     photoArray() {
       let arr = []
       for (let year in this.photosData) {
@@ -71,25 +66,21 @@ export default {
     }
   },
   methods: {
+    ...mapMutations([
+      'setStageIndex',
+      'setTimeLineIndex',
+      'setFontColor',
+      'setDominantColor'
+    ]),
     timelineClick(dayIndex) {
       this.dayindex = dayIndex
       let flattenArr = this.photoArray.slice(0, dayIndex)
       let index = flattenArr.reduce((a, b) => a.concat(...b), []).length
-      this.$emit('change', index)
+      this.setStageIndex(index)
     },
     time2Date(timeStamp) {
       let time = new Date(timeStamp)
       return `${time.getMonth() + 1}/${time.getDate()}`
-    },
-    filterPhotoArr(type) {
-      // 区分出 上午 / 下午 / 晚上
-      let cloneArr = [...this.photoArray]
-      this.cloneArr.forEach(item => {
-        item.filter(item => {
-          let hour = new Date(item.timestamp).getHours()
-          console.log(hour)
-        })
-      })
     }
   }
 }

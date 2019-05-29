@@ -5,10 +5,38 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-
+    stageIndex: 0,
+    timeLineIndex: 0,
+    fontColor: {color: '#000000'},
+    dominantColor: '#ffffff'
+  },
+  getters: {
+    dominantColor(state) {
+      return state.dominantColor
+    },
+    fontColor(state) {
+      return state.fontColor
+    },
+    timeLineIndex(state) {
+      return state.timeLineIndex
+    },
+    stageIndex(state) {
+      return state.stageIndex
+    }
   },
   mutations: {
-
+    setStageIndex(state, index){
+      state.stageIndex = index
+    },
+    setTimeLineIndex(state, index) {
+      state.timeLineIndex = index
+    },
+    setFontColor(state, color) {
+      state.fontColor = color
+    },
+    setDominantColor(state, color) {
+      state.dominantColor = color
+    }
   },
   actions: {
 

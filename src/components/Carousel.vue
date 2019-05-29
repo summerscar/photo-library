@@ -36,6 +36,7 @@
 <script>
 const ColorThief = require('color-thief');
 const colorThief = new ColorThief();
+import { mapMutations, mapGetters } from "vuex";
 
 export default {
     props: {
@@ -60,34 +61,34 @@ export default {
         return {
             nowIndex: this.index,
             firstLoaded: false,
-            colorArr: [0,0,0],
-            fontColor: ''
+            colorArr: [0,0,0]
         }
     },
     mounted() {
         // console.log()
     },
     watch: {
-        index: function() {
-            this.nowIndex = this.index
+        stageIndex: function() {
+            this.nowIndex = this.stageIndex
         },
         firstLoaded: function () {
             this.$refs.phohoList.style.transition = '0.5s all'
             this.colorArr = colorThief.getColor(this.$refs['img0'][0])
-            this.fontColor = {color: 'rgb(' + colorThief.getPalette(this.$refs['img0'][0])[0].join(',') + ')'}
+            let fontColor = {color: 'rgb(' + colorThief.getPalette(this.$refs['img0'][0])[0].join(',') + ')'}
+
+            this.setDominantColor('rgb(' + this.colorArr.join(',') + ')')
+            this.setFontColor(fontColor)
         },
         nowIndex: function (index) {
             this.colorArr = colorThief.getColor(this.$refs['img' + index][0])
-            this.fontColor = {color: 'rgb(' + colorThief.getPalette(this.$refs['img' + index][0])[0].join(',') + ')'}
-        },
-        colorArr: function () {
-            this.$emit('colorChange', 'rgb(' + this.colorArr.join(',') + ')')
-        },
-        fontColor: function (value) {
-            this.$emit('fontColorChange', value)
+            let fontColor = {color: 'rgb(' + colorThief.getPalette(this.$refs['img' + index][0])[0].join(',') + ')'}
+
+            this.setDominantColor('rgb(' + this.colorArr.join(',') + ')')
+            this.setFontColor(fontColor)
         }
     },
     computed: {
+        ...mapGetters(['fontColor', 'dominantColor', 'stageIndex', 'timeLineIndex']),
         dominantColor() {
             return {boxShadow: 'inset 0px 0px 14px 4px rgb(' + this.colorArr.join(',') + ')'}
         },
@@ -96,6 +97,12 @@ export default {
         }
     },
     methods: {
+        ...mapMutations([
+            'setStageIndex',
+            'setTimeLineIndex',
+            'setFontColor',
+            'setDominantColor'
+        ]),
         imgloaded(e, index) {
             if (index === 0 ) {
                 this.firstLoaded = true
@@ -116,7 +123,7 @@ export default {
             } else {
                 this.nowIndex -= 1
             }
-            this.$emit('change', this.nowIndex)
+            this.setStageIndex(this.nowIndex)
         },
         next() {
             if (this.nowIndex === this.photos.length - 1) {
@@ -125,7 +132,7 @@ export default {
             } else {
                 this.nowIndex += 1
             }
-            this.$emit('change', this.nowIndex)
+            this.setStageIndex(this.nowIndex)
         }
     }
 }

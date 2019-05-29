@@ -22,16 +22,14 @@
       :index="photoIndex"
       :photos="photoArray"
       :height="photoHeight"
-      :width="photoHeight * 3 / 2"
-      @change="imgChange"
-      @colorChange="colorChange"
-      @fontColorChange="fontColorChange" />
+      :width="photoHeight * 3 / 2"/>
   </div>
 </template>
 
 <script>
 import Carousel from './Carousel'
 import dayjs from 'dayjs'
+import { mapState, mapGetters } from "vuex";
 
 export default {
   name: 'photoStage',
@@ -49,15 +47,14 @@ export default {
     return {
       photoHeight: 0,
       dayjs: dayjs,
-      dayArr: ['一', '二', '三', '四', '五', '六', '日'],
-      fontColor: {},
-      dominantColor: ''
+      dayArr: ['一', '二', '三', '四', '五', '六', '日']
     }
   },
   mounted() {
     this.photoHeight = this.getPhotoHeight()
   },
   computed: {
+    ...mapGetters(['fontColor', 'dominantColor']),
     photoArray() {
       let arr = []
       for (let year in this.photosData) {
@@ -74,18 +71,6 @@ export default {
     }
   },
   methods: {
-    fontColorChange(value) {
-      this.fontColor = value
-      this.$emit('fontColorChange', value)
-    },
-    colorChange(color) {
-      document.getElementById('app').style.backgroundColor = color
-      this.dominantColor = color
-    },
-    imgChange(index) {
-      this.$emit('imgChange', index)
-      console.log('当前图片', index) // eslint-disable-line
-    },
     getPhotoHeight() {
       return this.$refs.photoStage.clientHeight - this.$refs.photoTitle.clientHeight
     }

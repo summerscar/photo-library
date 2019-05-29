@@ -1,7 +1,7 @@
 <template>
   <div class="home">
-    <PhotoStage @fontColorChange="fontColorChange" :photosData="photosData" :photoIndex="timeLineIndex" @imgChange="stageChange"/>
-    <TimeLine class="timeline" :fontColor="fontColor" :photosData="photosData" :stageIndex="stageIndex" @change="timeLineChange"/>
+    <PhotoStage @fontColorChange="fontColorChange" :photosData="photosData"/>
+    <TimeLine class="timeline" :photosData="photosData"/>
   </div>
 </template>
 
@@ -10,15 +10,21 @@
 import PhotoStage from '@/components/PhotoStage.vue'
 import TimeLine from '@/components/TimeLine.vue'
 import photosData from './../../public/photos.json'
+import { mapState, mapGetters } from "vuex";
 
 export default {
   name: 'home',
   data() {
     return {
-      photosData: photosData,
-      fontColor: {},
-      timeLineIndex: 0,
-      stageIndex: 0
+      photosData: photosData
+    }
+  },
+  computed: {
+    ...mapGetters(['fontColor', 'dominantColor', 'timeLineIndex', 'stageIndex'])
+  },
+  watch: {
+    dominantColor: function (value) {
+      document.getElementById('app').style.backgroundColor = value
     }
   },
   components: {
@@ -28,12 +34,6 @@ export default {
   methods: {
     fontColorChange(fontColor) {
       this.fontColor = fontColor
-    },
-    timeLineChange(index) {
-      this.timeLineIndex = index
-    },
-    stageChange(index) {
-      this.stageIndex = index
     }
   }
 }
