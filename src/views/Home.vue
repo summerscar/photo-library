@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <PhotoStage @fontColorChange="fontColorChange" :photosData="photosData"/>
+    <PhotoStage :photosData="photosData"/>
     <TimeLine class="timeline" :photosData="photosData"/>
   </div>
 </template>
@@ -35,9 +35,7 @@ export default {
 
   },
   methods: {
-    fontColorChange(fontColor) {
-      this.fontColor = fontColor
-    }
+
   }
 }
 </script>
