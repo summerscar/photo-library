@@ -25,8 +25,8 @@ function resize(path, distpath) {
     return new Promise((resolve, reject) => {
         im.readMetadata(path, function(err, metadata){
             if (err) throw err;
-            let rate = metadata.exif.exifImageWidth / metadata.exif.exifImageLength
-
+            // macos imageMagick exifImageWidth => pixelXDimension
+            let rate = (metadata.exif.exifImageWidth || metadata.exif.pixelXDimension) / (metadata.exif.exifImageLength || metadata.exif.pixelYDimension)
             im.resize({
                 srcPath: path,
                 dstPath: distpath,
