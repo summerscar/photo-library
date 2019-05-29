@@ -182,6 +182,7 @@ div.timeline {
       overflow-x: auto;
       align-content:space-around;
       div.timebar {
+        display: inline-flex;
         text-align: left;
         font-size: 12px;
         color: antiquewhite;
@@ -194,6 +195,7 @@ div.timeline {
         }
       }
       div.bar {
+        display: inline-flex;
         border-radius: 5px;
         min-width: 100%;
         height: 55px;
