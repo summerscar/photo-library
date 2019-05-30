@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-
+import router from '@/router'
 Vue.use(Vuex)
 
 export default new Vuex.Store({
@@ -26,6 +26,7 @@ export default new Vuex.Store({
   },
   mutations: {
     setStageIndex(state, index){
+      router.push({name: 'home', query: {id: index}})
       state.stageIndex = index
     },
     setTimeLineIndex(state, index) {

@@ -75,7 +75,6 @@ export default {
 
       saveLink.href = img.data
       saveLink.download = img.File
-      const date = new Date()
       saveLink.click()
       document.body.removeChild(saveLink)
     },
@@ -100,6 +99,7 @@ export default {
     margin-bottom: 6px;
 
     div.photo_title{
+      user-select: none;
       display: flex;
       justify-content: space-between;
       padding: 13px 20px 7px;

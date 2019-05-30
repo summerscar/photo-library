@@ -10,7 +10,7 @@
 import PhotoStage from '@/components/PhotoStage.vue'
 import TimeLine from '@/components/TimeLine.vue'
 import photosData from './../../public/photos.json'
-import { mapGetters } from "vuex";
+import { mapGetters, mapMutations } from "vuex";
 
 export default {
   name: 'home',
@@ -32,10 +32,10 @@ export default {
     TimeLine
   },
   mounted() {
-
+    this.$route.query.id && this.setStageIndex(Number(this.$route.query.id))
   },
   methods: {
-
+    ...mapMutations(['setStageIndex'])
   }
 }
 </script>

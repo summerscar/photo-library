@@ -204,6 +204,7 @@ div.timeline {
       overflow-x: auto;
       align-content:space-around;
       div.timebar {
+        user-select: none;
         display: inline-flex;
         text-align: left;
         font-size: 12px;
