@@ -60,7 +60,7 @@ function transform(number) {
     let num = number
     let x = String(num).indexOf('.') + 1;   //小数点的位置
     let y = x === 0 ? 0 : (String(num).length - x);  //小数的位数
-    if(y > 0){
+    if(y > 0 && num < 1){
         return `1/${1 / num}`
     } else {
         return num.toString()
