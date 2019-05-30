@@ -2,7 +2,13 @@
   <div class="timeline">
     <div class="bars" ref="bars" :style="fontColor">
       <div class="timebar">
-        <span :class="['timestamp', formatInterval(index, index + 1)]" v-for="(item, index) in photoArray" :key="index">{{ time2Date(item[0].timestamp) }}</span>
+        <span
+          :class="['timestamp', formatInterval(index, index + 1)]"
+          :ref="'dayIndex-' + index"
+          v-for="(item, index) in photoArray"
+          :key="index">
+          {{ time2Date(item[0].timestamp) }}
+        </span>
       </div>
       <div class="bar bar1">
         <div
@@ -76,6 +82,7 @@ export default {
           break
         }
       }
+      this.$refs['dayIndex-' + dayIndex][0].scrollIntoView({behavior: 'smooth', inline: 'start'})
       this.dayindex = dayIndex
     }
   },
@@ -185,7 +192,7 @@ div.timeline {
     height: 250px;
     border-radius: 10px 10px 0 0;
     box-shadow: 0px -1px 10px 0px rgba(0, 0, 0, 0.5);
-    padding: 0px 5px 10px;
+    padding: 0px 5px 0px;
     div.bars {
       width: 100%;
       height: 100%;

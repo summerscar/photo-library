@@ -40,8 +40,4 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-.timeline {
-    top: 6px;
-    position: relative;
-}
 </style>

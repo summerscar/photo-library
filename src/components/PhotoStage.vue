@@ -81,15 +81,16 @@ export default {
   div.photoStage {
     width: 100%;
     height: calc(100vh - 250px);
+    margin-bottom: 6px;
 
     div.photo_title{
       display: flex;
       justify-content: space-between;
-      padding: 10px 20px;
+      padding: 13px 20px 7px;
       background: rgba(0, 0, 0, 0.15);
       border-radius: 0 0 10px 10px;
       position: relative;
-      top: -5px;
+      top: -3px;
       div.time {
         text-shadow: 1px 1px 1px rgba(128, 128, 128, 0.5);
         span.day {

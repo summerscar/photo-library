@@ -3,11 +3,12 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "serve": "yarn generate && yarn compress && vue-cli-service serve",
+    "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
     "generate": "node bin/photos2json.js",
-    "compress": "node bin/compress.js"
+    "compress": "node bin/compress.js",
+    "photos": "yarn generate && yarn compress"
   },
   "dependencies": {
     "color-thief": "^2.2.4",
