@@ -82,7 +82,12 @@ export default {
           break
         }
       }
-      this.$refs['dayIndex-' + dayIndex][0].scrollIntoView({behavior: 'smooth', inline: 'start'})
+
+      let dayIndexDOM = this.$refs['dayIndex-' + dayIndex][0]
+      let dayIndexDOMLeft = dayIndexDOM.getBoundingClientRect().left
+      if (dayIndexDOMLeft > window.document.body.clientWidth || dayIndexDOMLeft < 0) {
+        dayIndexDOM.scrollIntoView({behavior: 'smooth', inline: 'start'})
+      }
       this.dayindex = dayIndex
     }
   },
@@ -189,7 +194,7 @@ export default {
 div.timeline {
     background: rgba(0, 0, 0, 0.15);
     width: 100%;
-    height: 250px;
+    height: 244px;
     border-radius: 10px 10px 0 0;
     box-shadow: 0px -1px 10px 0px rgba(0, 0, 0, 0.5);
     padding: 0px 5px 0px;

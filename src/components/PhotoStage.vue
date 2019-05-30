@@ -8,10 +8,10 @@
       </div>
       <div class="control">
         <span>
-          <i class="fa fa-download" aria-hidden="true"></i>
+          <i class="fa fa-download" aria-hidden="true" @click="download"></i>
         </span>
         <span>
-          <i class="fa fa-repeat" aria-hidden="true"></i>
+          <i class="fa fa-repeat" aria-hidden="true" @click="rotateImg"></i>
         </span>
         <span>
           {{ (stageIndex + 1) + '/' + photoArray.length }}
@@ -19,6 +19,7 @@
       </div>
     </div>
     <Carousel
+      ref="carousel"
       :photos="photoArray"
       :height="photoHeight"
       :width="photoHeight * 3 / 2"/>
@@ -42,7 +43,7 @@ export default {
     return {
       photoHeight: 0,
       dayjs: dayjs,
-      dayArr: ['一', '二', '三', '四', '五', '六', '日']
+      dayArr: ['日', '一', '二', '三', '四', '五', '六']
     }
   },
   mounted() {
@@ -66,8 +67,23 @@ export default {
     }
   },
   methods: {
+    download() {
+      let img = this.photoArray[this.stageIndex]
+      console.log(this.photoArray[this.stageIndex])
+      const saveLink = document.createElement('a')
+      document.body.appendChild(saveLink)
+
+      saveLink.href = img.data
+      saveLink.download = img.File
+      const date = new Date()
+      saveLink.click()
+      document.body.removeChild(saveLink)
+    },
     getPhotoHeight() {
       return this.$refs.photoStage.clientHeight - this.$refs.photoTitle.clientHeight
+    },
+    rotateImg() {
+      this.$refs.carousel.rotateImg()
     }
   },
   components: {
@@ -106,11 +122,14 @@ export default {
         }
       }
       div.control {
+        text-shadow: 1px 1px 1px rgba(128, 128, 128, 0.5);
         span {
-          padding: 0 8px;
           font-size: 17px;
           line-height: 2;
           cursor: pointer;
+          i {
+            padding: 0 8px;
+          }
         }
       }
     }

@@ -141,7 +141,14 @@ export default {
                 this.nowIndex += 1
             }
             this.setStageIndex(this.nowIndex)
-        })
+        }),
+        rotateImg() {
+            let nowImg = this.$refs['img' + this.stageIndex][0].parentElement
+            let rotateTimes = nowImg.getAttribute('data-rotate') || 0
+            rotateTimes = Number(rotateTimes) + 1
+            nowImg.setAttribute('data-rotate', rotateTimes)
+            nowImg.style.transform = `rotate(${rotateTimes * 90}deg) scale(${rotateTimes % 2 === 0 ? 1 : (this.height / this.width)})`
+        }
     }
 }
 </script>
@@ -216,6 +223,7 @@ div.Carousel {
         div.photo {
             height: 100%;
             position: relative;
+            transition: .4s transform;
             img {
                 border-radius: 8px;
                 position: absolute;

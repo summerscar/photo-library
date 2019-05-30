@@ -8,7 +8,8 @@
     "lint": "vue-cli-service lint",
     "generate": "node bin/photos2json.js",
     "compress": "node bin/compress.js",
-    "photos": "yarn generate && yarn compress"
+    "photos": "yarn generate && yarn compress",
+    "deploy": "yarn build && scp -rP 22 ./dist/* root@173.82.114.233:/www/wwwroot/photos.summerscar.me/"
   },
   "dependencies": {
     "color-thief": "^2.2.4",
