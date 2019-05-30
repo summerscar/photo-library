@@ -59,7 +59,7 @@ function getExif(path, filename) {
 function transform(number) {
     let num = number
     let x = String(num).indexOf('.') + 1;   //小数点的位置
-    let y = String(num).length - x;  //小数的位数
+    let y = x === 0 ? 0 : (String(num).length - x);  //小数的位数
     if(y > 0){
         return `1/${1 / num}`
     } else {

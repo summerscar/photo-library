@@ -91,6 +91,7 @@ export default {
       position: relative;
       top: -5px;
       div.time {
+        text-shadow: 1px 1px 1px rgba(128, 128, 128, 0.5);
         span.day {
           padding-left: 10px;
           font-size: 24px;

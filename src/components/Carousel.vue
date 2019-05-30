@@ -21,7 +21,6 @@
                     <li><span>ISO</span>{{photos[nowIndex].ISO}}</li>
                     <li><span>光圈</span>{{photos[nowIndex].FNumber}}</li>
                     <li><span>快门</span>{{photos[nowIndex].ExposureTime}}</li>
-                    <li><span>焦距</span>{{photos[nowIndex].FocalLength}}</li>
                 </ul>
             </div>
         </div>
@@ -67,7 +66,7 @@ export default {
     },
     mounted() {
         this.$el.addEventListener('mousewheel', (e) => {
-            if (e.deltaY > 0) {
+            if (e.deltaY > 0 || e.deltaX > 0) {
                 this.next()
             } else {
                 this.previous()
@@ -177,6 +176,7 @@ div.Carousel {
                         display: inline-block;
                         width: 40px;
                     }
+                    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5);
                     line-height: 1.6;
                     text-align: left;
                     opacity: 0.5;

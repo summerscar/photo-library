@@ -1,6 +1,6 @@
 <template>
   <div class="timeline">
-    <div class="bars" :style="fontColor">
+    <div class="bars" ref="bars" :style="fontColor">
       <div class="timebar">
         <span :class="['timestamp', formatInterval(index, index + 1)]" v-for="(item, index) in photoArray" :key="index">{{ time2Date(item[0].timestamp) }}</span>
       </div>
@@ -10,7 +10,7 @@
           v-for="(dayPhotos, dayIndex) in photoArray"
           :key="dayIndex"
           @click="timelineClick(dayIndex)">
-          <img v-for="(photo, index) in filterImage(dayPhotos, 1)" :key="index" :src="photo.data">
+          <img v-for="(photo, index) in filterImage(dayPhotos, 1)" :key="index" :src="photo.data" :style="{left: (index * 10 + 'px'), zIndex: index}">
         </div>
       </div>
       <div class="bar bar2">
@@ -19,7 +19,7 @@
           v-for="(dayPhotos, dayIndex) in photoArray"
           :key="dayIndex"
           @click="timelineClick(dayIndex)">
-          <img v-for="(photo, index) in filterImage(dayPhotos, 2)" :key="index" :src="photo.data">
+          <img v-for="(photo, index) in filterImage(dayPhotos, 2)" :key="index" :src="photo.data" :style="{left: (index * 10 + 'px'), zIndex: index}">
         </div>
       </div>
       <div class="bar bar3">
@@ -28,7 +28,7 @@
           v-for="(dayPhotos, dayIndex) in photoArray"
           :key="dayIndex"
           @click="timelineClick(dayIndex)">
-          <img v-for="(photo, index) in filterImage(dayPhotos, 3)" :key="index" :src="photo.data">
+          <img v-for="(photo, index) in filterImage(dayPhotos, 3)" :key="index" :src="photo.data" :style="{left: (index * 10 + 'px'), zIndex: index}">
         </div>
       </div>
     </div>
@@ -53,16 +53,26 @@ export default {
       dayindex: 0 // dayindex 时间轴中的照片组index
     }
   },
+  mounted() {
+    this.$el.addEventListener('mousewheel', (e) => {
+        if (e.deltaY > 0 || e.deltaX > 0) {
+          this.$refs.bars.scrollLeft += 100
+        } else {
+          this.$refs.bars.scrollLeft -= 100
+        }
+    })
+  },
   watch: {
     stageIndex: function(value) {
+      value = value + 1
       let arr = this.photoArray.map(item => item.length)
-      let index = 0
+      let index = arr[0] || 0
       let dayIndex = 0
-      for (let i = 0; i < arr.length; i++) {
+      for (let i = 1; i <= arr.length; i++) {
         if (value > index) {
           index += arr[i]
         } else {
-          dayIndex = i
+          dayIndex = i - 1
           break
         }
       }
@@ -170,7 +180,7 @@ export default {
   margin-right: 160px;
 }
 div.timeline {
-    background: rgba(0, 0, 0, 0.2);
+    background: rgba(0, 0, 0, 0.15);
     width: 100%;
     height: 250px;
     border-radius: 10px 10px 0 0;
@@ -199,23 +209,28 @@ div.timeline {
         border-radius: 5px;
         min-width: 100%;
         height: 55px;
-        background: rgba(0, 0, 0, 0.2);
+        background: rgba(255, 255, 255, 0.05);
         text-align: left;
         padding: 0 5px;
         div.wrapper {
           height: 100%;
-          display: inline-block;
+          display: inline-flex;
           border: 2px solid transparent;
-          border-radius: 3px;
+          border-radius: 6px;
           opacity: 0.4;
           cursor: pointer;
           width: 70px;
           vertical-align: top;
+          position: relative;
+          overflow: hidden;
           &.active {
-            opacity: 0.8;
+            box-shadow: 0px 0px 3px 1px rgba(0, 0, 0, 0.4);
+            opacity: 0.9;
             border: 2px solid;
           }
           img {
+            position: absolute;
+            box-shadow: -1px 0px 2px #00000091;
             height: 100%;
             width: 100%;
           }
