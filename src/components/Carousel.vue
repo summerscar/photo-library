@@ -66,9 +66,9 @@ export default {
     },
     mounted() {
         this.$el.addEventListener('mousewheel', (e) => {
-            if (e.deltaY > 0 || e.deltaX > 0) {
+            if (e.deltaY > 50 || e.deltaX > 50) {
                 this.next()
-            } else {
+            } else if (e.deltaY < -50 || e.deltaX < -50) {
                 this.previous()
             }
         })
@@ -122,7 +122,7 @@ export default {
                 e.target.style.height = this.width * height / width + 'px'
             }
         },
-        previous: throttle(300, function() {
+        previous: throttle(300, true,function() {
             console.log('previous')
             if (this.nowIndex === 0) {
                 // this.nowIndex = this.photos.length - 1
@@ -132,7 +132,7 @@ export default {
             }
             this.setStageIndex(this.nowIndex)
         }),
-        next: throttle(300, function () {
+        next: throttle(300, true,function () {
             console.log('next')
             if (this.nowIndex === this.photos.length - 1) {
                 return
