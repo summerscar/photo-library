@@ -2,7 +2,7 @@ module.exports = {
     devServer: {
       open: true
     },
-    publicPath: process.env.TYPE === 'github' ? '/photo-library' : '/',
+    publicPath: process.env.TYPE === 'github' ? '/photo-library/' : '/',
     chainWebpack: config => {
       config.module
         .rule('fix')
