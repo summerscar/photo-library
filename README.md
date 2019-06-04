@@ -2,40 +2,37 @@
 
 一个时间轴功能的相册
 
-## 生成数据json
-```
-yarn generate
-```
+## 环境需求
 
-## 压缩照片
-```
-yarn compress
-```
+* nodejs v7.8+
+* ImageMagick
+    * MacOS:  ```brew install imagemagick```
+    * Windows: [Download](http://www.imagemagick.com.cn/download.html) (需配置环境变量)
 
-## Project setup
-```
-yarn install
-```
+## 运行
 
-### Compiles and hot-reloads for development
-```
-yarn run serve
-```
+1. 安装依赖
 
-### Compiles and minifies for production
-```
-yarn run build
-```
+    ```yarn```
+2. **照片**（带有Exif信息） 放入至 /photos 文件夹
 
-### Run your tests
-```
-yarn run test
-```
+3. 压缩并生成照片数据
 
-### Lints and fixes files
-```
-yarn run lint
-```
+    ```yarn photos```
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+4. 运行项目
+
+    ```yarn serve```
+
+5. 生成静态页面
+
+    ```yarn build```
+
+## TODO
+
+* 最大化预览
+* ...
+
+## 预览
+
+![preview](./preview/preview.jpg)

@@ -3,8 +3,10 @@
         <div class="Carousel-background"></div>
         <div class="detail">
             <transition name="slide-fade">
-                <div class="detail-wrapper detail-left" v-if="showmore">
-                    <v-chart :options="options"/>
+                <div class="detail-wrapper detail-left" ref="detailLeft" v-if="showmore">
+                    <div class="chartWrapper">
+                        <v-chart :options="options"/>
+                    </div>
                 </div>
             </transition>
         </div>
@@ -304,13 +306,20 @@ div.Carousel {
             top: 0;
             bottom: 0;
             &.detail-left {
-                .echarts {
-                    width: 350px;
-                    height: 280px;
+                .chartWrapper {
+                    width: 250px;
+                    height: 250px;
+                    margin: auto;
                     position: absolute;
-                    top: 50%;
-                    right: 10%;
-                    transform: translateY(-50%);
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+                }
+                .echarts {
+                    transform: translateX(-15px);
+                    width: 100%;
+                    height: 100%;
                 }
             }
             &.detail-right {

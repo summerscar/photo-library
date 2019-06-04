@@ -11,10 +11,10 @@
           <i class="fa fa-info-circle" aria-hidden="true" @click="toggleshowmore"></i>
         </span>
         <span>
-          <i class="fa fa-download" aria-hidden="true" @click="download"></i>
+          <i class="fa fa-repeat" aria-hidden="true" @click="rotateImg"></i>
         </span>
         <span>
-          <i class="fa fa-repeat" aria-hidden="true" @click="rotateImg"></i>
+          <i class="fa fa-download" aria-hidden="true" @click="download"></i>
         </span>
         <span>
           {{ (stageIndex + 1) + '/' + photoArray.length }}
