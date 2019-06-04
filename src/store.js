@@ -8,7 +8,8 @@ export default new Vuex.Store({
     stageIndex: 0,
     timeLineIndex: 0,
     fontColor: {color: '#000000'},
-    dominantColor: '#ffffff'
+    dominantColor: '#ffffff',
+    showmore: true
   },
   getters: {
     dominantColor(state) {
@@ -22,6 +23,9 @@ export default new Vuex.Store({
     },
     stageIndex(state) {
       return state.stageIndex
+    },
+    showmore(state) {
+      return state.showmore
     }
   },
   mutations: {
@@ -37,6 +41,9 @@ export default new Vuex.Store({
     },
     setDominantColor(state, color) {
       state.dominantColor = color
+    },
+    setShowmore(state, showmore) {
+      state.showmore = showmore
     }
   },
   actions: {

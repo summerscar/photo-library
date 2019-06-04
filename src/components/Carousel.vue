@@ -2,7 +2,11 @@
     <div class="Carousel" :style="{height: height + 'px'}">
         <div class="Carousel-background"></div>
         <div class="detail">
-            <div class="detail-left"></div>
+            <transition name="slide-fade">
+                <div class="detail-wrapper detail-left" v-if="showmore">
+                    <v-chart :options="options"/>
+                </div>
+            </transition>
         </div>
         <div class="photo_wrapper" ref="photoWrapper" :style="{width: width + 'px'}">
             <div class="photoCover" :style="dominantColor"></div>
@@ -13,16 +17,18 @@
             </div>
         </div>
         <div class="detail">
-            <div class="detail-wrapper detail-right">
-                <ul :style="fontColor">
-                    <li><span>照片</span>{{photos[nowIndex].File}}</li>
-                    <li><span>产商</span>{{photos[nowIndex].Make}}</li>
-                    <li><span>型号</span>{{photos[nowIndex].Model}}</li>
-                    <li><span>ISO</span>{{photos[nowIndex].ISO}}</li>
-                    <li><span>光圈</span>{{photos[nowIndex].FNumber}}</li>
-                    <li><span>快门</span>{{photos[nowIndex].ExposureTime}}</li>
-                </ul>
-            </div>
+            <transition name="slide-fade">
+                <div class="detail-wrapper detail-right" v-if="showmore">
+                    <ul :style="fontColor">
+                        <li><span>照片</span>{{photos[nowIndex].File}}</li>
+                        <li><span>产商</span>{{photos[nowIndex].Make}}</li>
+                        <li><span>型号</span>{{photos[nowIndex].Model}}</li>
+                        <li><span>ISO</span>{{photos[nowIndex].ISO}}</li>
+                        <li><span>光圈</span>{{photos[nowIndex].FNumber}}</li>
+                        <li><span>快门</span>{{photos[nowIndex].ExposureTime}}</li>
+                    </ul>
+                </div>
+            </transition>
         </div>
         <div class="control-arrow left" @click="previous">
             <i class="fa fa-angle-left" aria-hidden="true"></i>
@@ -36,7 +42,9 @@
 const ColorThief = require('color-thief')
 const colorThief = new ColorThief()
 import { throttle } from 'throttle-debounce'
-import { mapMutations, mapGetters } from "vuex";
+import { mapMutations, mapGetters } from 'vuex'
+import ECharts from 'vue-echarts'
+import 'echarts/lib/chart/line'
 
 export default {
     props: {
@@ -61,8 +69,12 @@ export default {
         return {
             nowIndex: this.index,
             firstLoaded: false,
-            colorArr: [0,0,0]
+            colorArr: [0,0,0],
+            blackWhiteArray: []
         }
+    },
+    components: {
+        'v-chart': ECharts
     },
     mounted() {
         this.$el.addEventListener('mousewheel', (e) => {
@@ -79,27 +91,90 @@ export default {
         },
         firstLoaded: function () {
             this.$refs.phohoList.style.transition = '0.5s all'
-            this.colorArr = colorThief.getColor(this.$refs['img0'][0])
-            let fontColor = {color: 'rgb(' + colorThief.getPalette(this.$refs['img0'][0])[0].join(',') + ')'}
+            let img = this.$refs['img' + this.stageIndex][0]
+            this.colorArr = colorThief.getColor(img)
+            let fontColor = {color: 'rgb(' + colorThief.getPalette(img)[0].join(',') + ')'}
 
             this.setDominantColor('rgb(' + this.colorArr.join(',') + ')')
             this.setFontColor(fontColor)
+            this.drawImageData(img)
         },
         nowIndex: function (index) {
-            this.colorArr = colorThief.getColor(this.$refs['img' + index][0])
-            let fontColor = {color: 'rgb(' + colorThief.getPalette(this.$refs['img' + index][0])[0].join(',') + ')'}
+            let img = this.$refs['img' + index][0]
+            if (img.getAttribute('data-loaded') === 'true') {
+                this.colorArr = colorThief.getColor(img)
+                let fontColor = {color: 'rgb(' + colorThief.getPalette(img)[0].join(',') + ')'}
 
-            this.setDominantColor('rgb(' + this.colorArr.join(',') + ')')
-            this.setFontColor(fontColor)
+                this.setDominantColor('rgb(' + this.colorArr.join(',') + ')')
+                this.setFontColor(fontColor)
+                this.drawImageData(img)
+            } else {
+                img.onload = () => {
+                    this.colorArr = colorThief.getColor(img)
+                    let fontColor = {color: 'rgb(' + colorThief.getPalette(img)[0].join(',') + ')'}
+
+                    this.setDominantColor('rgb(' + this.colorArr.join(',') + ')')
+                    this.setFontColor(fontColor)
+                    this.drawImageData(img)
+                }
+            }
+
         }
     },
     computed: {
-        ...mapGetters(['fontColor', 'dominantColor', 'stageIndex', 'timeLineIndex']),
+        ...mapGetters(['fontColor', 'dominantColor', 'stageIndex', 'timeLineIndex', 'showmore']),
         dominantColor() {
             return {boxShadow: 'inset 0px 0px 14px 4px rgb(' + this.colorArr.join(',') + ')'}
         },
         carouselColor() {
             return 'rgb(' + this.colorArr.join(',') + ')'
+        },
+        options() {
+            return {
+                title: {
+                    text: '直方图',
+                    left: 'center',
+                    top: 'top'
+                },
+                tooltip: {
+                    show: false
+                },
+                legend: {
+                    show: false
+                },
+                xAxis: {
+                    show: false,
+                    data: this.blackWhiteArray.map(() => ''),
+                    splitLine: {
+                        show: false
+                    }
+                },
+                yAxis: {
+                    show: false,
+                    max: function(value) {
+                        return value.max;
+                    }
+                },
+                series: [{
+                    name: '',
+                    type: 'line',
+                    smooth: true,
+                    symbol: 'none',
+                    itemStyle: {
+                        color: this.fontColor.color,
+                        shadowColor: 'rgba(255,255,255,0.5)',
+                        shadowOffsetX: 1,
+                        shadowOffsetY: 2
+                    },
+                    areaStyle: {
+                        color: this.fontColor.color,
+                        shadowColor: 'rgba(255,255,255,0.5)',
+                        shadowOffsetX: 1,
+                        shadowOffsetY: 2
+                    },
+                    data: this.blackWhiteArray
+                }]
+            }
         }
     },
     methods: {
@@ -109,8 +184,48 @@ export default {
             'setFontColor',
             'setDominantColor'
         ]),
+        drawImageData (image) {
+            let tempCanvas = document.createElement('canvas')
+            tempCanvas.width = image.width
+            tempCanvas.height = image.height
+            let tempCtx = tempCanvas.getContext('2d')
+
+            tempCtx.drawImage(image, 0, 0, image.width, image.height)
+
+            let imagedata = tempCtx.getImageData(0, 0, image.width, image.height)
+
+            let data = imagedata.data;
+            let i, len, red, green, blue, average
+            let blackWhiteArray = []
+            for(let i = 0; i < 256; i++) {
+                blackWhiteArray[i] = 0
+            }
+
+            for (i = 0 , len = data.length; i < len; i+=4) {
+                red = data[i];
+                green = data[i + 1]
+                blue = data[i + 2]
+                // alpha = data[i + 3]
+
+                average = Math.floor((red + green + blue) / 3);  // 每个像素点亮度
+                blackWhiteArray[average]++
+
+                data[i] = average
+                data[i+1] = average
+                data[i+2] = average
+            }
+
+            // let canvas = document.createElement('canvas')
+            // canvas.width = image.width
+            // canvas.height = image.height
+            // let ctx = canvas.getContext('2d')
+            // ctx.putImageData(imagedata, 0, 0)
+            // document.body.appendChild(canvas)
+            this.blackWhiteArray = blackWhiteArray
+        },
         imgloaded(e, index) {
-            if (index === 0 ) {
+            e.target.setAttribute('data-loaded', 'true')
+            if (index === this.stageIndex ) {
                 this.firstLoaded = true
             }
             let {width, height} = e.target
@@ -153,6 +268,23 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+.slide-fade-enter-active {
+    transform: translateY(0px);
+    opacity: 0.8;
+    transition-property: transform,opacity;
+    transition-duration: .5s;
+}
+.slide-fade-leave-active {
+    transform: translateY(0px);
+    opacity: 0.8;
+    transition-property: transform,opacity;
+    transition-duration: .5s;
+}
+.slide-fade-enter, .slide-fade-leave-to {
+    transform: translateY(-20px);
+    opacity: 0;
+}
+
 div.Carousel {
     width: 100%;
     position: relative;
@@ -171,22 +303,32 @@ div.Carousel {
             right: 0;
             top: 0;
             bottom: 0;
-            opacity: 0.8;
-
-            ul {
-                position: absolute;
-                top: 50%;
-                left: 20%;
-                transform: translateY(-50%);
-                li {
-                    span {
-                        display: inline-block;
-                        width: 40px;
+            &.detail-left {
+                .echarts {
+                    width: 350px;
+                    height: 280px;
+                    position: absolute;
+                    top: 50%;
+                    right: 10%;
+                    transform: translateY(-50%);
+                }
+            }
+            &.detail-right {
+                ul {
+                    position: absolute;
+                    top: 50%;
+                    left: 20%;
+                    transform: translateY(-50%);
+                    li {
+                        span {
+                            display: inline-block;
+                            width: 40px;
+                        }
+                        text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5);
+                        line-height: 1.6;
+                        text-align: left;
+                        opacity: 0.5;
                     }
-                    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5);
-                    line-height: 1.6;
-                    text-align: left;
-                    opacity: 0.5;
                 }
             }
         }

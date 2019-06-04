@@ -8,6 +8,9 @@
       </div>
       <div class="control">
         <span>
+          <i class="fa fa-info-circle" aria-hidden="true" @click="toggleshowmore"></i>
+        </span>
+        <span>
           <i class="fa fa-download" aria-hidden="true" @click="download"></i>
         </span>
         <span>
@@ -29,7 +32,7 @@
 <script>
 import Carousel from './Carousel'
 import dayjs from 'dayjs'
-import { mapGetters } from "vuex";
+import { mapGetters, mapMutations } from "vuex";
 
 export default {
   name: 'photoStage',
@@ -50,7 +53,7 @@ export default {
     this.photoHeight = this.getPhotoHeight()
   },
   computed: {
-    ...mapGetters(['fontColor', 'dominantColor', 'stageIndex']),
+    ...mapGetters(['fontColor', 'dominantColor', 'stageIndex', 'showmore']),
     photoArray() {
       let arr = []
       for (let year in this.photosData) {
@@ -67,6 +70,10 @@ export default {
     }
   },
   methods: {
+    ...mapMutations(['setShowmore']),
+    toggleshowmore () {
+      this.setShowmore(!this.showmore)
+    },
     download() {
       let img = this.photoArray[this.stageIndex]
       console.log(this.photoArray[this.stageIndex])
