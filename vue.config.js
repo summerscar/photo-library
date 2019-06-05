@@ -3,6 +3,7 @@ module.exports = {
       open: true
     },
     publicPath: process.env.TYPE === 'github' ? '/photo-library/' : '/',
+    productionSourceMap: false,
     chainWebpack: config => {
       config.module
         .rule('fix')
@@ -10,5 +11,10 @@ module.exports = {
         .use('url-loader')
           .loader('url-loader')
           .end()
+    },
+    pluginOptions: {
+      webpackBundleAnalyzer: {
+        openAnalyzer: false
+      }
     }
   }
