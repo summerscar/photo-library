@@ -2,8 +2,7 @@
   <div id="app">
     <router-view/>
     <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
+      <a href="https://github.com/summerscar/photo-library" target="_blank">Github</a>
     </div>
   </div>
 </template>

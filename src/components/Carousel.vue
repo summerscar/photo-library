@@ -14,7 +14,7 @@
             <div class="photoCover" :style="dominantColor"></div>
             <div class="phohoList" ref="phohoList" :style="{width: width * photos.length + 'px', left: '-' + nowIndex * width + 'px'}">
                 <div class="photo" v-for="(photo, index) in photos" :key="index" :style="{width: width + 'px'}">
-                    <img :ref="'img' + [index]" :src="photo.data" @load="imgloaded($event, index)">
+                    <img :ref="'img' + [index]" :src="photo.data" @load="imgloaded($event, index)" @click="imgClick">
                 </div>
             </div>
         </div>
@@ -186,6 +186,9 @@ export default {
             'setFontColor',
             'setDominantColor'
         ]),
+        imgClick() {
+            this.$FullscreenBox.show(this.photos[this.stageIndex])
+        },
         drawImageData (image) {
             let tempCanvas = document.createElement('canvas')
             tempCanvas.width = image.width
@@ -376,6 +379,7 @@ div.Carousel {
             position: relative;
             transition: .4s transform;
             img {
+                cursor: pointer;
                 border-radius: 8px;
                 position: absolute;
                 left: 50%;
