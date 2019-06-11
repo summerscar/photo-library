@@ -8,7 +8,7 @@
       </div>
       <div class="control">
         <span>
-          <i class="fa fa-info-circle" aria-hidden="true" @click="toggleshowmore"></i>
+          <i class="fa fa-info-circle" aria-hidden="true" @click="toggleshowmore" v-if="!isMobile"></i>
         </span>
         <span>
           <i class="fa fa-repeat" aria-hidden="true" @click="rotateImg"></i>
@@ -21,11 +21,13 @@
         </span>
       </div>
     </div>
-    <Carousel
+    <div class="carousel">
+      <Carousel
       ref="carousel"
       :photos="photoArray"
       :height="photoHeight"
       :width="photoHeight * 3 / 2"/>
+    </div>
   </div>
 </template>
 
@@ -53,7 +55,7 @@ export default {
     this.photoHeight = this.getPhotoHeight()
   },
   computed: {
-    ...mapGetters(['fontColor', 'dominantColor', 'stageIndex', 'showmore']),
+    ...mapGetters(['fontColor', 'dominantColor', 'stageIndex', 'showmore', 'isMobile']),
     photoArray() {
       let arr = []
       for (let year in this.photosData) {
@@ -86,7 +88,11 @@ export default {
       document.body.removeChild(saveLink)
     },
     getPhotoHeight() {
-      return this.$refs.photoStage.clientHeight - this.$refs.photoTitle.clientHeight
+      if (!this.isMobile) {
+        return this.$refs.photoStage.clientHeight - this.$refs.photoTitle.clientHeight
+      } else {
+        return this.$refs.photoStage.clientWidth * 2 / 3
+      }
     },
     rotateImg() {
       this.$refs.carousel.rotateImg()
@@ -109,23 +115,24 @@ export default {
       user-select: none;
       display: flex;
       justify-content: space-between;
-      padding: 13px 20px 7px;
+      padding: 13px 1.25rem 7px;
       background: rgba(0, 0, 0, 0.15);
       border-radius: 0 0 10px 10px;
       position: relative;
       top: -3px;
       div.time {
         text-shadow: 1px 1px 1px rgba(128, 128, 128, 0.5);
+        padding-top: 2px;
         span.day {
-          padding-left: 10px;
-          font-size: 24px;
+          padding-left: 0.625rem;
+          font-size: 1.5rem;
         }
         span.date {
-          font-size: 26px;
+          font-size: 1.5rem;
         }
         span.time {
-          padding-left: 15px;
-          font-size: 17px;
+          padding-left: 1rem;
+          font-size: 1rem;
         }
       }
       div.control {
@@ -139,6 +146,11 @@ export default {
           }
         }
       }
+    }
+    div.carousel {
+      height: calc(100% - 54px);
+      display: flex;
+      align-items: center;
     }
   }
 </style>

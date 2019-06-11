@@ -9,6 +9,17 @@
 
 <style lang="scss">
 @import './style/common.scss';
+@media screen and (min-width: 768px) {
+  html, body {
+    font-size: 16px;
+  }
+}
+@media screen and (max-width: 767px) {
+  html, body {
+    font-size: 12px;
+  }
+}
+
 body {
   overflow-y: hidden;
 }

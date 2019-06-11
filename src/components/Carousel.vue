@@ -3,7 +3,7 @@
         <div class="Carousel-background"></div>
         <div class="detail">
             <transition name="slide-fade">
-                <div class="detail-wrapper detail-left" ref="detailLeft" v-if="showmore">
+                <div class="detail-wrapper detail-left" ref="detailLeft" v-if="showmore && !isMobile">
                     <div class="chartWrapper">
                         <v-chart :options="options"/>
                     </div>
@@ -20,7 +20,7 @@
         </div>
         <div class="detail">
             <transition name="slide-fade">
-                <div class="detail-wrapper detail-right" v-if="showmore">
+                <div class="detail-wrapper detail-right" v-if="showmore && !isMobile">
                     <ul :style="fontColor">
                         <li><span>照片</span>{{photos[nowIndex].File}}</li>
                         <li><span>产商</span>{{photos[nowIndex].Make}}</li>
@@ -124,7 +124,7 @@ export default {
         }
     },
     computed: {
-        ...mapGetters(['fontColor', 'dominantColor', 'stageIndex', 'timeLineIndex', 'showmore']),
+        ...mapGetters(['fontColor', 'dominantColor', 'stageIndex', 'timeLineIndex', 'showmore', 'isMobile']),
         dominantColor() {
             return {boxShadow: 'inset 0px 0px 14px 4px rgb(' + this.colorArr.join(',') + ')'}
         },

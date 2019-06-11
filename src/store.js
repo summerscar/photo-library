@@ -9,7 +9,8 @@ export default new Vuex.Store({
     timeLineIndex: 0,
     fontColor: {color: '#000000'},
     dominantColor: '#ffffff',
-    showmore: true
+    showmore: true,
+    isMobile: /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(window.navigator.userAgent)
   },
   getters: {
     dominantColor(state) {
@@ -26,6 +27,9 @@ export default new Vuex.Store({
     },
     showmore(state) {
       return state.showmore
+    },
+    isMobile(state) {
+      return state.isMobile
     }
   },
   mutations: {

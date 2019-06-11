@@ -44,10 +44,15 @@ div.fullscreen {
     background-color: rgba(0, 0, 0, 0.7);
     div.wrapper {
         width: 90%;
-        height: 90%;
-        margin: 50px auto 0;
+        height: 100%;
+        margin: 0 auto;
         text-align: center;
+        position: relative;
         img {
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
             border-radius: 20px;
             width: auto;
             height: auto;
