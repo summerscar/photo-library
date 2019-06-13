@@ -13,7 +13,12 @@
 
 1. 安装依赖
 
-    ```yarn```
+    ```bash
+        git clone git@github.com:summerscar/photo-library.git
+        cd photo-library
+        yarn
+    ```
+
 2. **照片**（带有Exif信息） 放入至 /photos 文件夹
 
 3. 压缩并生成照片数据
