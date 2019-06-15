@@ -27,7 +27,7 @@
                         <li><span>型号</span>{{photos[nowIndex].Model}}</li>
                         <li><span>ISO</span>{{photos[nowIndex].ISO}}</li>
                         <li><span>光圈</span>{{photos[nowIndex].FNumber}}</li>
-                        <li><span>快门</span>{{photos[nowIndex].ExposureTime}}</li>
+                        <li><span>曝光</span>{{photos[nowIndex].ExposureTime}}</li>
                     </ul>
                 </div>
             </transition>
