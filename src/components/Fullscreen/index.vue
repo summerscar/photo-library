@@ -45,12 +45,12 @@ div.fullscreen {
     div.wrapper {
         width: 90%;
         height: 100%;
+        padding: 50px 0;
         margin: 0 auto;
         text-align: center;
         position: relative;
         img {
-            position: absolute;
-            left: 0;
+            position: relative;
             top: 50%;
             transform: translateY(-50%);
             border-radius: 20px;

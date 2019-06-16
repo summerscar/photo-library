@@ -1,4 +1,5 @@
 const im = require('imagemagick');
+const ExifImage = require('exif').ExifImage;
 const fs = require('fs')
 const path = require('path')
 const spinner = require('ora')()
@@ -23,10 +24,10 @@ let photos = fs.readdirSync(path.resolve(__dirname, '../photos')).filter(item =>
 
 function resize(path, distpath) {
     return new Promise((resolve, reject) => {
-        im.readMetadata(path, function(err, metadata){
+        im.identify(path, function(err, features){
             if (err) throw err;
             // macos imageMagick exifImageWidth => pixelXDimension
-            let rate = (metadata.exif.exifImageWidth || metadata.exif.pixelXDimension) / (metadata.exif.exifImageLength || metadata.exif.pixelYDimension)
+            let rate = features.width / features.height
             im.resize({
                 srcPath: path,
                 dstPath: distpath,
