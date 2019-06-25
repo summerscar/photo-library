@@ -4,7 +4,7 @@
       <div class="time">
         <span class="date" v-if="photoArray">{{ dayjs(photoArray[stageIndex].timestamp).format('YYYY/MM/DD') }}</span>
         <span class="day" v-if="photoArray">{{ '周' + dayArr[dayjs(photoArray[stageIndex].timestamp).day()] }}</span>
-        <span class="time" v-if="photoArray">{{ (new Date(photoArray[stageIndex].timestamp)).getHours() + ':' + (new Date(photoArray[stageIndex].timestamp)).getMinutes() }}</span>
+        <span class="time" v-if="photoArray">{{ photoTime }}</span>
       </div>
       <div class="control">
         <span>
@@ -69,6 +69,10 @@ export default {
         item.data = require('./../../public/photos/' + item.File)
       })
       return arr
+    },
+    photoTime() {
+      let time = new Date(this.photoArray[this.stageIndex].timestamp)
+      return time.getHours().toString().padStart(2, '0') + ':' + time.getMinutes().toString().padStart(2, '0')
     }
   },
   methods: {
